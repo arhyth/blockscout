@@ -1803,11 +1803,6 @@ defmodule Explorer.Chain do
     TokenTransfer.fetch_token_transfers_from_token_hash(token_address_hash, options)
   end
 
-  @spec count_token_transfers_from_token_hash(Hash.t()) :: non_neg_integer()
-  def count_token_transfers_from_token_hash(token_address_hash) do
-    TokenTransfer.count_token_transfers_from_token_hash(token_address_hash)
-  end
-
   @spec transaction_has_token_transfers?(Hash.t()) :: boolean()
   def transaction_has_token_transfers?(transaction_hash) do
     query = from(tt in TokenTransfer, where: tt.transaction_hash == ^transaction_hash, limit: 1, select: 1)

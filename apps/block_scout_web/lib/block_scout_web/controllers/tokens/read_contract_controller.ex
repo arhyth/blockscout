@@ -1,7 +1,7 @@
 defmodule BlockScoutWeb.Tokens.ReadContractController do
   use BlockScoutWeb, :controller
 
-  alias Explorer.Chain
+  alias Explorer.{Chain, Counters.TokenCounter}
 
   def index(conn, %{"token_id" => address_hash_string}) do
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
@@ -10,7 +10,7 @@ defmodule BlockScoutWeb.Tokens.ReadContractController do
         conn,
         "index.html",
         token: token,
-        total_token_transfers: Chain.count_token_transfers_from_token_hash(address_hash),
+        total_token_transfers: TokenCounter.fetch(address_hash),
         total_token_holders: Chain.count_token_holders_from_token_hash(address_hash)
       )
     else
