@@ -3,7 +3,7 @@ defmodule BlockScoutWeb.BlockListPage do
 
   use Wallaby.DSL
 
-  import Wallaby.Query, only: [css: 1]
+  import Wallaby.Query, only: [css: 1, css: 2]
 
   alias Explorer.Chain.Block
 
@@ -11,7 +11,15 @@ defmodule BlockScoutWeb.BlockListPage do
     visit(session, "/blocks")
   end
 
+  def visit_uncles_page(session) do
+    visit(session, "/uncles")
+  end
+
   def block(%Block{number: block_number}) do
     css("[data-test='block_number'][data-block-number='#{block_number}']")
+  end
+
+  def blocks(count) do
+    css("[data-test='block_number']", count: count)
   end
 end
