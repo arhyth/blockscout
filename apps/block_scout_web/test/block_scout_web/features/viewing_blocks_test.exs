@@ -47,6 +47,15 @@ defmodule BlockScoutWeb.ViewingBlocksTest do
     end
 
     test "replaces place holder block if skipped block received", %{session: session} do
+      block = insert(:block, number: 315)
+
+      session
+      |> BlockListPage.visit_page()
+      |> assert_has(BlockListPage.block(block))
+      |> assert_has(BlockListPage.place_holder_blocks(3))
+    end
+
+    test "inserts place holder blocks on render for out of order blocks", %{session: session} do
       BlockListPage.visit_page(session)
 
       block = insert(:block, number: 315)
@@ -55,13 +64,6 @@ defmodule BlockScoutWeb.ViewingBlocksTest do
       session
       |> assert_has(BlockListPage.block(block))
       |> assert_has(BlockListPage.place_holder_blocks(3))
-
-      skipped_block = insert(:block, number: 314)
-      Notifier.handle_event({:chain_event, :blocks, [skipped_block]})
-
-      session
-      |> assert_has(BlockListPage.block(skipped_block))
-      |> assert_has(BlockListPage.place_holder_blocks(2))
     end
 
     test "block detail page has transactions", %{session: session} do
